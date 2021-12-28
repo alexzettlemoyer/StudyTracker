@@ -6,21 +6,23 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class Activity {
+public class Activity implements Comparable<Activity>{
 	
 	double totalMinutes;
 	String timeElapsed;
 	String title;
 	String date;
 	int dayOfYear;
+	LocalDateTime dateTimeOfActivity;
+	
 	static NumberFormat nf;
 	
-	LocalDateTime now;
+	//LocalDateTime now;
 	DateTimeFormatter DAY_OF_YEAR = DateTimeFormatter.ofPattern("D");
 	
 	public Activity(String date, String dayOfYear, String title, String time) {
 		
-		now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now();
 		
 		nf = new DecimalFormat("00.0");
 		nf.setMaximumIntegerDigits(2);
@@ -41,8 +43,12 @@ public class Activity {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param time
+	 * @return
+	 */
 	public static double getTime(String time) {
-		
 		
 		Scanner scnr = new Scanner(time);
 		scnr.useDelimiter(":");
@@ -68,6 +74,12 @@ public class Activity {
 	}
 	
 	public static String getTime(double time) {
+		
+		nf = new DecimalFormat("00.0");
+		nf.setMaximumIntegerDigits(2);
+		nf.setMaximumIntegerDigits(2);
+		nf.setMaximumFractionDigits(1);
+		nf.setMinimumFractionDigits(1);
 
 		int hours = (int)time / 60;
 		double minutes = time % 60;
@@ -81,12 +93,28 @@ public class Activity {
 		if (date == null || date.length() == 0) {
 			throw new IllegalArgumentException("Error getting date.");
 		}
+		
+		dateTimeOfActivity = getDateTime(date);
 		this.date = date;
 	}
 	
 	private void setDateManually(String date, LocalDateTime now) {
+				
+		LocalDateTime manualDateTime = getDateTime(date);
 		
-		int currentYear = now.getYear();
+		if (manualDateTime.isAfter(now)) {
+			throw new IllegalArgumentException("Cannot save Activity in future time.");
+		}
+		
+		if (manualDateTime.isBefore(LocalDateTime.of(2021, 1, 1, 9, 30))) {
+			throw new IllegalArgumentException("Cannot save Activity before 2021.");
+		}
+		
+		dateTimeOfActivity = manualDateTime;
+		this.date = date;
+	}
+	
+	private LocalDateTime getDateTime(String date) {
 		
 		if (date == null || date.length() == 0) {
 			throw new IllegalArgumentException("Invalid date.");
@@ -107,18 +135,17 @@ public class Activity {
 		if (day > 31 || day <= 0) {
 			throw new IllegalArgumentException("Invalid day.");
 		}
-		if (year < 2021 || year > currentYear) {
-			throw new IllegalArgumentException("Invalid year.");
-		}
 		
+		LocalDateTime dateTime;
 		try {
-			LocalDateTime manualDateTime = LocalDateTime.of(year, month, day, 9, 30);
-			setDayOfYearManually(manualDateTime);
+			dateTime = LocalDateTime.of(year, month, day, 9, 30);
+			setDayOfYearManually(dateTime);
 		} catch (Exception e) {
 			throw new IllegalArgumentException("Error getting date.");
 		}
 		
-		this.date = date;
+		return dateTime;
+		
 	}
 	
 	private void setDayOfYear(String dayOfYear) {
@@ -188,7 +215,7 @@ public class Activity {
 		if (hours < 0 || hours > 10) {
 			throw new IllegalArgumentException("Invalid hours. Must be between 0 and 10.");
 		}
-		if (min >= 60 || min <= 0) {
+		if (min >= 60 || min < 0) {
 			throw new IllegalArgumentException("Invalid minutes. Must be between 0 and 60.");
 		}
 		if (sec >= 100 || sec < 0) {
@@ -214,6 +241,10 @@ public class Activity {
 		return dayOfYear;
 	}
 	
+	public LocalDateTime getDateTimeOfActivity() {
+		return dateTimeOfActivity;
+	}
+	
 	public double getTotalMinutes() {
 		return totalMinutes;
 	}
@@ -224,6 +255,20 @@ public class Activity {
 	
 	public String toString() {
 		return date + "\\t" + title + "\\t" + timeElapsed;
+	}
+
+	@Override
+	public int compareTo(Activity o) {
+		
+		if (dateTimeOfActivity.equals(o.getDateTimeOfActivity())) {
+			return 0;
+		}
+		else if (dateTimeOfActivity.isBefore(o.getDateTimeOfActivity())) {
+			return 1;
+		}
+		else {
+			return -1;
+		}
 	}
 
 }

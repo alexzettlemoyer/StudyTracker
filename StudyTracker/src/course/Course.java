@@ -3,16 +3,16 @@ package course;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import activity.Activity;
+import util.SortedList;
 
 public class Course implements Comparable<Course> {
 	
 	private String title;
 	
-	private ArrayList<Activity> activity;
+	private SortedList<Activity> activity;
 	
 	private LocalDateTime now;
 	private int dayOfYear;
@@ -22,7 +22,7 @@ public class Course implements Comparable<Course> {
 	
 	public Course(String title) {
 		setTitle(title);
-		activity = new ArrayList<>();
+		activity = new SortedList<>();
 		dtf = DateTimeFormatter.ofPattern(DAY_OF_YEAR);
 	}
 	
@@ -34,7 +34,7 @@ public class Course implements Comparable<Course> {
 	}
 	
 	public void addActivity(String date, String dayOfYear, String title, String time) {
-		activity.add(0, new Activity(date, dayOfYear, title, time));
+		activity.add(new Activity(date, dayOfYear, title, time));
 	}
 	
 	public void deleteActivity(int index) {
@@ -53,7 +53,7 @@ public class Course implements Comparable<Course> {
 		}
 	}
 	
-	public ArrayList<Activity> getActivity() {
+	public SortedList<Activity> getActivity() {
 		return activity;
 	}
 	

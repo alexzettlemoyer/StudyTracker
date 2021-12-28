@@ -137,6 +137,28 @@ class CourseTest {
 		assertEquals(726.5, c.getDayMinutes(14, dayOfYear));
 		assertEquals(793.0, c.getDayMinutes(30, dayOfYear));
 		
+		
+		
+		// Specific failing test
+		Course b = new Course("PY208");
+		// day of year tested: 362
+		LocalDateTime dayOfYear2 = LocalDateTime.parse("2021-12-28T15:54:51.959314");
+
+				
+		b.addActivity("12/28/21", "362", "hw7", "0:00:20:18");
+		assertEquals(0.33, b.getTotalMinutes());
+		assertEquals(0.33, b.getDayMinutes(0, dayOfYear2));
+		assertEquals(0.33, b.getDayMinutes(7, dayOfYear2));
+		assertEquals(0.33, b.getDayMinutes(14, dayOfYear2));
+		assertEquals(0.33, b.getDayMinutes(30, dayOfYear2));
+		
+		b.addActivity("11/01/21", null, "hw1", "2:00.0");
+		assertEquals(120.33, b.getTotalMinutes());
+		assertEquals(0.33, b.getDayMinutes(0, dayOfYear2));
+		assertEquals(0.33, b.getDayMinutes(7, dayOfYear2));
+		assertEquals(0.33, b.getDayMinutes(14, dayOfYear2));
+		assertEquals(0.33, b.getDayMinutes(30, dayOfYear2));
+		
 	}
 	
 	@Test
@@ -161,20 +183,19 @@ class CourseTest {
 		assertEquals(100.5, c.getDayMinutes(14, dayOfYear));
 		assertEquals(100.5, c.getDayMinutes(30, dayOfYear));
 		
-		c.addActivity("1/2/21", "2", "hw3", "0:45:45:00"); // last 7
+		c.addActivity("1/2/22", "2", "hw3", "0:45:45:00"); // last 7
 		assertEquals(146.25, c.getTotalMinutes());
 		assertEquals(0.0, c.getDayMinutes(0, dayOfYear));
 		assertEquals(146.25, c.getDayMinutes(7, dayOfYear));
 		assertEquals(146.25, c.getDayMinutes(14, dayOfYear));
 		assertEquals(146.25, c.getDayMinutes(30, dayOfYear));
 		
-		c.addActivity("1/4/21", "4", "hw4", "3:00:00:00"); // today
+		c.addActivity("1/4/22", "4", "hw4", "3:00:00:00"); // today
 		assertEquals(326.25, c.getTotalMinutes());
 		assertEquals(180.0, c.getDayMinutes(0, dayOfYear));
 		assertEquals(326.25, c.getDayMinutes(7, dayOfYear));
 		assertEquals(326.25, c.getDayMinutes(14, dayOfYear));
 		assertEquals(326.25, c.getDayMinutes(30, dayOfYear));
-		
 
 	}
 

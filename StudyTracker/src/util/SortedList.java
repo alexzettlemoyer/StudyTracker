@@ -43,6 +43,7 @@ public class SortedList<E extends Comparable<E>> {
 			throw new NullPointerException("Cannot add null element.");
 		}
 		
+		
 		ListNode current = front;
 		boolean added = false;
 		
@@ -52,16 +53,13 @@ public class SortedList<E extends Comparable<E>> {
 			size++;
 		}
 		// if the element is added in the front
-		else if (front.data.compareTo(element) > 0) {
+		else if (front.data.compareTo(element) > 0 || front.data.compareTo(element) == 0) {
 			front = new ListNode(element, front);
 			size++; 
 		}
 		else if (front.next == null) {
 			
-			if (front.data.compareTo(element) == 0) {
-				throw new IllegalArgumentException("Cannot add duplicate element.");
-			}
-			else if (front.data.compareTo(element) < 0) {
+			if (front.data.compareTo(element) < 0) {
 				front.next = new ListNode(element, null);
 				size++;
 			}
@@ -73,9 +71,6 @@ public class SortedList<E extends Comparable<E>> {
 		}
 		else {
 			while (current.next != null && !added) {
-				if (current.data.compareTo(element) == 0 || current.next.data.compareTo(element) == 0) {
-					throw new IllegalArgumentException("Cannot add duplicate element.");
-				}
 				if (current.data.compareTo(element) < 0 && current.next.data.compareTo(element) > 0) {
 					current.next = new ListNode(element, current.next);
 					size++;
@@ -97,9 +92,6 @@ public class SortedList<E extends Comparable<E>> {
 		if (!contains(element)) {
 			throw new IllegalArgumentException("Element does not exist in list.");
 		}
-//		if (front == null) {
-//			throw new IndexOutOfBoundsException("Invalid index.");
-//		}
 		else {
 			if (front.data.equals(element)) {
 				front = front.next;

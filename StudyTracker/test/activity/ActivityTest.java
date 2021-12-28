@@ -95,12 +95,12 @@ class ActivityTest {
 			// invalid year (earlier than 2021)
 		Exception e6 = assertThrows(IllegalArgumentException.class,
 				() -> new Activity("12/27/19", null, "hw", "0:45.85"));
-		assertTrue(e6.getMessage().equals("Invalid year."));
+		assertTrue(e6.getMessage().equals("Cannot save Activity before 2021."));
 		
 			// invalid year (in the future)
 		Exception e7 = assertThrows(IllegalArgumentException.class,
 				() -> new Activity("12/27/23", null, "hw", "0:45.85"));
-		assertTrue(e7.getMessage().equals("Invalid year."));
+		assertTrue(e7.getMessage().equals("Cannot save Activity in future time."));
 		
 			// invalid date (null)
 		Exception e8 = assertThrows(IllegalArgumentException.class,

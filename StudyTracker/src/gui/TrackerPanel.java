@@ -114,6 +114,8 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 		txtArea = new JTextArea();
 		txtArea.setBorder(border);
 		txtArea.setColumns(11);
+		txtArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
 		
 		
 			// START button
@@ -167,7 +169,7 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 		
 			// MANUAL ADD display
 		txtDate = new JTextArea(date);
-		txtArea.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		txtDate.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		txtDate.setPreferredSize(new Dimension(73, 25));
 		txtDate.setBorder(border);
 		txtTitle = new JTextArea();
@@ -369,7 +371,7 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 				    	  break;
 				      }
 					      NumberFormat nf = new DecimalFormat("00");
-					      lblTime.setText(nf.format(hours)+":"+nf.format(minutes)+":"+nf.format(seconds)+":"+nf.format(milliseconds));
+					      lblTime.setText(nf.format(hours) + ":" + nf.format(minutes) + ":" + nf.format(seconds) + ":" + nf.format(milliseconds));
 				      try {
 				    	  Thread.sleep(8);
 				      } catch(Exception e){}
@@ -457,20 +459,20 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 		else if (e.getSource().equals(btnManualAdd)) {
 			
 			// Opens pop-up window prompting for information to manually add activity
-			if (JOptionPane.QUESTION_MESSAGE == JOptionPane.showConfirmDialog(
-				    TrackerPanel.this, pnlManualAdd, "", JOptionPane.OK_CANCEL_OPTION)) {
-					
-					String manualDate = txtDate.getText();
-					String manualTitle = txtTitle.getText();
-					String manualTime = txtTime.getText();
+			int selected = JOptionPane.showConfirmDialog(TrackerPanel.this, pnlManualAdd, "", JOptionPane.OK_CANCEL_OPTION);
+			
+			if (selected == JOptionPane.OK_OPTION) {
+			
+				String manualDate = txtDate.getText();
+				String manualTitle = txtTitle.getText();
+				String manualTime = txtTime.getText();
 				
-					try {
-						listener.saveActivity(manualDate, null, manualTitle, manualTime);	// try to save the activity with manual info
-						System.out.println("listener"); // TODO: not getting to this line
-					} catch (IllegalArgumentException iae) {
-						JOptionPane.showMessageDialog(TrackerPanel.this, iae.getMessage()); 
-					}
-			} 
+				try {
+					listener.saveActivity(manualDate, null, manualTitle, manualTime);	// try to save the activity with manual info
+				} catch (IllegalArgumentException iae) {
+					JOptionPane.showMessageDialog(TrackerPanel.this, iae.getMessage()); 
+				}
+			}
 		}
 	}
 

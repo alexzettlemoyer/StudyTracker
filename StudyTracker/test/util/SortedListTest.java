@@ -36,9 +36,6 @@ class SortedListTest {
 		SortedList<Integer> list2 = new SortedList<Integer>();
 		list2.add(3);
 		assertEquals(3, list2.get(0));
-		Exception e1 = assertThrows(IllegalArgumentException.class, 
-				() -> list2.add(3));
-		assertEquals("Cannot add duplicate element.", e1.getMessage());
 		list2.add(2);
 		assertEquals(2, list2.get(0));
 		assertEquals(3, list2.get(1)); // 2 -> 3
@@ -57,21 +54,6 @@ class SortedListTest {
 		assertEquals(6, list3.get(2));
 		list3.add(100);
 		assertEquals(100, list3.get(3));
-		
-		// adding invalid elements
-		
-		// duplicate in middle of list
-		Exception e2 = assertThrows(IllegalArgumentException.class,
-				() -> list3.add(6));
-		assertEquals("Cannot add duplicate element.", e2.getMessage());
-		// duplicate at front of list
-		Exception e3 = assertThrows(IllegalArgumentException.class,
-				() -> list3.add(1));
-		assertEquals("Cannot add duplicate element.", e3.getMessage());
-		// duplicate at back of list
-		Exception e4 = assertThrows(IllegalArgumentException.class,
-				() -> list3.add(100));
-		assertEquals("Cannot add duplicate element.", e4.getMessage());
 		
 		// adding null element
 		Exception e5 = assertThrows(NullPointerException.class,

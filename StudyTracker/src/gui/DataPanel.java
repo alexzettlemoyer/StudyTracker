@@ -299,7 +299,7 @@ public class DataPanel extends JPanel implements ActionListener {
 			case "last 14":
 				lblCourseTime.setText(tracker.getCourseDayMinutes(14, null));
 				break;
-			case "last30":
+			case "last 30":
 				lblCourseTime.setText(tracker.getCourseDayMinutes(30, null));
 				break;
 			default:
@@ -320,7 +320,7 @@ public class DataPanel extends JPanel implements ActionListener {
 			case "last 14":
 				lblSemesterTime.setText(tracker.getSemesterDayMinutes(14, null));
 				break;
-			case "last30":
+			case "last 30":
 				lblSemesterTime.setText(tracker.getSemesterDayMinutes(30, null));
 				break;
 			default:
