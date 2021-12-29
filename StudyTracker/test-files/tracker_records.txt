@@ -7,7 +7,7 @@
 - 12/14/21, hw5, 0:14.0
 # Spring 2021
 * HON395
-- 5/14/21, final paper, 5:12.37
+- 5/14/21, final paper, 5:12.4
 - 5/10/21, draft paper, 2:32.1
 - 5/01/21, discussion post, 0:10.3
 * PY205

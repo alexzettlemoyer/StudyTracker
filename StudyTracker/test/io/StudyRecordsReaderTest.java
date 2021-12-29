@@ -45,7 +45,7 @@ class StudyRecordsReaderTest {
 		Semester s2 = new Semester("Spring 2021");
 		
 		Course c3 = new Course("HON395");
-		c3.addActivity("5/14/21", "134", "final paper", "5:12:22:20");
+		c3.addActivity("5/14/21", "134", "final paper", "5:12:24:20");
 		c3.addActivity("5/10/21", "130", "draft paper", "2:32:06:00");
 		c3.addActivity("5/01/21", "121", "discussion post", "0:10:18:00");
 		
