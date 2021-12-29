@@ -205,7 +205,12 @@ public class Activity implements Comparable<Activity>{
 			minScan.useDelimiter("\\.");
 			min = Integer.parseInt(minScan.next());
 			
-			sec = Integer.parseInt(minScan.next());
+			String seconds = minScan.next();
+			
+			if (seconds.length() == 1) { // 0.5 = 0.50
+				seconds = seconds + "0";
+			}
+			sec = Integer.parseInt(seconds);
 			
 		} catch (Exception e) {
 			hrScan.close();
@@ -222,9 +227,9 @@ public class Activity implements Comparable<Activity>{
 			throw new IllegalArgumentException("Invalid second fraction. Must be between 0 and 100.");
 		}
 		
-		timeElapsed = timeString;
 		double minutesElapsed = (hours * 60) + min + ((double)sec / 100);
 		totalMinutes = Math.round(minutesElapsed * 100.0) / 100.0;
+		timeElapsed = getTime(totalMinutes);
 
 	}
 	

@@ -37,6 +37,10 @@ public class Course implements Comparable<Course> {
 		activity.add(new Activity(date, dayOfYear, title, time));
 	}
 	
+	public void addActivity(Activity newActivity) {
+		activity.add(newActivity);
+	}
+	
 	public void deleteActivity(int index) {
 		if (index < 0 || index >= activity.size()) {
 			throw new ArrayIndexOutOfBoundsException();

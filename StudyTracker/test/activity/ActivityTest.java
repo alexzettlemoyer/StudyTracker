@@ -48,7 +48,7 @@ class ActivityTest {
 	
 	@Test
 	void testManualActivity() {
-		
+				
 		// testing a valid activity
 		Activity a = new Activity("12/16/21", null, "hw", "3:15.0");
 		assertEquals("12/16/21", a.getDate());
@@ -151,6 +151,7 @@ class ActivityTest {
 		Exception e17 = assertThrows(IllegalArgumentException.class,
 				() -> new Activity("12/27/21", null, "hw", ""));
 		assertTrue(e17.getMessage().equals("Invalid time.")); 
+		
 			
 	}
 	

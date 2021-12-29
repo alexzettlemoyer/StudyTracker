@@ -28,14 +28,21 @@ public class Semester implements Comparable<Semester> {
 	
 	public void addCourse(String courseName) {
 		Course newCourse = new Course(courseName);
+		addCourse(newCourse);
+	}
+	
+	public void addCourse(Course course) {
+		if (course == null) {
+			throw new IllegalArgumentException("Cannot add null Course.");
+		}
 		
 		// check that it's not a duplicate
 		for (int i = 0; i < courses.size(); i++) {
-			if (courses.get(i).getCourseTitle().equals(courseName)) {
+			if (courses.get(i).getCourseTitle().equals(course.getCourseTitle())) {
 				throw new IllegalArgumentException("Course with this name already exists.");
 			}
 		}
-		courses.add(newCourse);
+		courses.add(course);
 	}
 	
 	public void removeCourse(Course course) {

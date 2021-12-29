@@ -23,6 +23,7 @@ class CourseTest {
 		
 		c.removeActivity("homework2");
 		assertEquals(233.65, c.getTotalMinutes());
+		
 	}
 
 	@Test
@@ -164,7 +165,7 @@ class CourseTest {
 	@Test
 	void testGetDayMinutesInterYear() {
 		Course c = new Course("CSC216");
-		
+				
 		// Day of year: 4
 		// Date: 1/4/2022 9:30
 		LocalDateTime dayOfYear = LocalDateTime.of(2022, 1, 4, 9, 30);
