@@ -147,6 +147,13 @@ public class ActivityPanel extends JPanel implements ActionListener {
 		this.repaint();
 	}
 	
+	public void update() {
+		updateSemester();
+		updateCourse();
+		this.validate();
+		this.repaint();
+	}
+	
 	public void updateSemester() {
 		Semester currentSemester = tracker.getCurrentSemester();
 		if (currentSemester != null) {

@@ -1,9 +1,12 @@
 package tracker;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 import activity.Activity;
 import course.Course;
+import io.StudyRecordsReader;
+import io.StudyRecordsWriter;
 import semester.Semester;
 import util.SortedList;
 
@@ -13,6 +16,8 @@ public class Tracker {
 	
 	Semester currentSemester;
 	Course currentCourse;
+	
+	boolean isChanged;
 	
 	private static Tracker instance;
 	
@@ -30,6 +35,40 @@ public class Tracker {
 		reset();
 	}
 	
+	public void loadRecords(File file) {
+		SortedList<Semester> loadedSemesters = StudyRecordsReader.readStudyRecords(file);
+		reset();
+		
+		for (int i = 0; i < loadedSemesters.size(); i++) {
+			try {
+				addSemester(loadedSemesters.get(i));
+			}
+			catch (Exception e) {
+				// do nothing - was a duplicate semester (doesn't add)
+			}
+		}
+		
+		if (semesters.size() > 0) {
+			setCurrentSemester(semesters.get(0).getSemesterName());
+			
+			if (semesters.get(0).getCourseList().size() > 0) {
+				setCurrentCourse(semesters.get(0).getCourseList().get(0).getCourseTitle());
+			}
+		}
+		
+		if (semesters.size() == loadedSemesters.size()) {
+			isChanged = false;
+		}
+		else {
+			isChanged = true;
+		}
+	}
+	
+	public void saveRecords(File file) {
+		StudyRecordsWriter.writeStudyRecordsFile(file, semesters);
+		isChanged = false;
+	}
+	
 	/**
 	 * SET CURRENTSEMESTER
 	 * @param String semesterName
@@ -37,6 +76,7 @@ public class Tracker {
 	public void setCurrentSemester(String semesterName) {
 		if (semesterName == null) {
 			currentSemester = null;
+			setCurrentCourse(null);
 		}
 		
 		for (int i = 0; i < semesters.size(); i++) {
@@ -51,7 +91,7 @@ public class Tracker {
 			}
 		}
 	}
-	
+		
 	/**
 	 * SET CURRENTCOURSE
 	 * @param String courseName
@@ -75,15 +115,20 @@ public class Tracker {
 	 */
 	public void addSemester(String semesterName) {
 		Semester newSemester = new Semester(semesterName);
+		addSemester(newSemester);
+	}
+	
+	public void addSemester(Semester newSemester) {
 		
 		// check that it's not a duplicate
 		for (int i = 0; i < semesters.size(); i++) {
-			if (semesters.get(i).getSemesterName().equals(semesterName)) {
+			if (semesters.get(i).getSemesterName().equals(newSemester.getSemesterName())) {
 				throw new IllegalArgumentException("Semester with this name already exists.");
 			}
 		}
 		semesters.add(newSemester);
 		setCurrentSemester(newSemester.getSemesterName());
+		isChanged = true;
 	}
 	
 	/**
@@ -93,6 +138,7 @@ public class Tracker {
 	public void addCourseToSemester(String courseName) {
 		currentSemester.addCourse(courseName);
 		setCurrentCourse(courseName);
+		isChanged = true;
 	}
 	
 	/**
@@ -111,6 +157,7 @@ public class Tracker {
 		else {
 			setCurrentSemester(null);
 		}
+		isChanged = true;
 	}
 
 	/**
@@ -129,6 +176,7 @@ public class Tracker {
 		else {
 			setCurrentCourse(null);
 		}
+		isChanged = true;
 	}
 	
 	/**
@@ -139,6 +187,7 @@ public class Tracker {
 		if (currentSemester == null) {
 			throw new IllegalArgumentException("Cannot edit null semester.");
 		}
+		isChanged = true;
 		currentSemester.setSemesterName(newSemesterName);
 	}
 	
@@ -150,6 +199,7 @@ public class Tracker {
 		if (currentCourse == null) {
 			throw new IllegalArgumentException("Cannot edit a null course.");
 		}
+		isChanged = true;
 		currentCourse.setTitle(newCourseName);
 	} 
 	
@@ -163,6 +213,7 @@ public class Tracker {
 		if (currentCourse == null) {
 			throw new IllegalArgumentException("Must select a course to save activity to.");
 		}
+		isChanged = true;
 		currentCourse.addActivity(date, dayOfYear, title, time);
 	}
 	
@@ -174,6 +225,7 @@ public class Tracker {
 		if (currentCourse == null) {
 			throw new IllegalArgumentException("Must select a course to delete activity from.");
 		}
+		isChanged = true;
 		currentCourse.deleteActivity(index);
 	}
 	
@@ -191,6 +243,10 @@ public class Tracker {
 	 */
 	public Course getCurrentCourse() {
 		return currentCourse;
+	}
+	
+	public boolean isChanged() {
+		return isChanged;
 	}
 	
 	/**
@@ -233,7 +289,7 @@ public class Tracker {
 	 */
 	public String[][] getActivity() {
 		if (currentCourse == null) {
-			return null;
+			return new String[0][0];
 		}		
 		return currentCourse.getActivityDisplay();
 	}
@@ -297,6 +353,7 @@ public class Tracker {
 		semesters = new SortedList<>();
 		currentSemester = null;
 		currentCourse = null;
+		isChanged = false;
 	}
 
 }

@@ -145,7 +145,7 @@ public class DataPanel extends JPanel implements ActionListener {
 		
 		
 		GridBagConstraints cGraph = new GridBagConstraints();
-		cGraph.insets = new Insets(3, 3, 3, 3);
+		cGraph.insets = new Insets(2, 2, 2, 2);
 		
 		pnlCourse.setLayout(new GridBagLayout());		
 		pnlSemester.setLayout(new GridBagLayout());
@@ -269,6 +269,16 @@ public class DataPanel extends JPanel implements ActionListener {
 		else if (e.getSource().equals(btnGraphSemester)) {
 			
 		}
+	}
+	
+	public void update() {
+		updateCourseTime("total");
+		updateSemesterTime("total");
+		updateTotal();
+		updateSemester();
+		updateCourse();
+		this.validate();
+		this.repaint();
 	}
 	
 	public void addActivity() {

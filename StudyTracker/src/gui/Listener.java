@@ -35,13 +35,13 @@ public class Listener {
 	}
 	
 	public void changeSemester() {
-		myActivity.updateSemester();
-		myData.updateSemester();
+		myActivity.update();
+		myData.update();
 	}
 	
 	public void changeCourse() {
-		myActivity.updateCourse();
-		myData.updateCourse();
+		myActivity.update();
+		myData.update();
 	}
 	
 	public void saveActivity(String date, String dayOfYear, String title, String timeElapsed) {

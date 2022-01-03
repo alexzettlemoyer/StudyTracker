@@ -246,6 +246,7 @@ public class DirectoryPanel extends JPanel implements ActionListener {
 				String semesterName = (String) JOptionPane.showInputDialog(this, "Semester?", "Create New Semester", JOptionPane.QUESTION_MESSAGE);
 				tracker.addSemester(semesterName);
 				updateLists();
+				listener.changeSemester();
 			} catch (IllegalArgumentException iae) {
 				if (!iae.getMessage().equals("Empty Name")) {
 					JOptionPane.showMessageDialog(DirectoryPanel.this, iae.getMessage());
@@ -294,6 +295,7 @@ public class DirectoryPanel extends JPanel implements ActionListener {
 				}
 				String courseName = (String) JOptionPane.showInputDialog(this, "Course Name?", "Create New Course", JOptionPane.QUESTION_MESSAGE);
 				tracker.addCourseToSemester(courseName);
+				listener.changeCourse();
 				updateCourseList();
 			} catch (IllegalArgumentException iae) {
 				if (!iae.getMessage().equals("Empty title")) {

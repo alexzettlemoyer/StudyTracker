@@ -1,6 +1,4 @@
 # Fall 2021
-* CSC216
-- 01/02/22, finish app, 1:40.8
 * MA242
 - 12/27/21, project1, 2:00.5
 - 12/26/21, hw3.5, 0:45.0
@@ -13,4 +11,3 @@
 - 5/10/21, draft paper, 2:32.1
 - 5/01/21, discussion post, 0:10.3
 * PY205
-- 5/12/21, exam studying, 6:02.8
