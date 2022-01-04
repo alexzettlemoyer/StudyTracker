@@ -25,6 +25,7 @@ public class DataPanel extends JPanel implements ActionListener {
 	
 	JLabel lblCourse;
 	JLabel lblCourseTime;
+	JButton btnGraphCourseWeekly;
 	JButton btnGraphCourse;
 	JComboBox<String> comboCoursePeriod;
 	
@@ -97,7 +98,13 @@ public class DataPanel extends JPanel implements ActionListener {
 		comboCoursePeriod.addItem("total");
 		coursePeriod = "total";
 		comboCoursePeriod.setSelectedItem(coursePeriod);
-			// GRAPH COURSE: button
+			// GRAPH COURSE [ weekly total ] : button
+		btnGraphCourseWeekly = new JButton("Weekly");
+		btnGraphCourseWeekly.setBorder(border);
+		btnGraphCourseWeekly.setBackground(Color.LIGHT_GRAY);
+		btnGraphCourseWeekly.setPreferredSize(new Dimension(80, 40));
+		btnGraphCourseWeekly.addActionListener(this);
+			// GRAPH COURSE [ last 30 days ] : button
 		btnGraphCourse = new JButton("Graph");
 		btnGraphCourse.setBorder(border);
 		btnGraphCourse.setBackground(Color.LIGHT_GRAY);
@@ -265,9 +272,13 @@ public class DataPanel extends JPanel implements ActionListener {
 		}
 		else if (e.getSource().equals(btnGraphCourse)) {
 			
+			GraphPanel graphCourse = new GraphPanel(true, (String) comboCoursePeriod.getSelectedItem());
+			graphCourse.setVisible(true);
 		}
 		else if (e.getSource().equals(btnGraphSemester)) {
 			
+			GraphPanel graphSemester = new GraphPanel(false, (String) comboSemesterPeriod.getSelectedItem());
+			graphSemester.setVisible(true);
 		}
 	}
 	

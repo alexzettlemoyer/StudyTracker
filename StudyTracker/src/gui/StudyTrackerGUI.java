@@ -76,7 +76,7 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		setSize(800, 600);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setUpMenuBar();
-		
+				
 		prop = new Properties();
 		propFile = new File(properties);
 		

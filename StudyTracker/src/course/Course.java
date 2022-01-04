@@ -17,6 +17,7 @@ public class Course implements Comparable<Course> {
 	private LocalDateTime now;
 	private int dayOfYear;
 	private DateTimeFormatter dtf;
+	private DateTimeFormatter md;
 	
 	private final String DAY_OF_YEAR = "D";
 	
@@ -24,6 +25,7 @@ public class Course implements Comparable<Course> {
 		setTitle(title);
 		activity = new SortedList<>();
 		dtf = DateTimeFormatter.ofPattern(DAY_OF_YEAR);
+		md = DateTimeFormatter.ofPattern("MM/dd");
 	}
 	
 	public void setTitle(String title) {
@@ -92,7 +94,7 @@ public class Course implements Comparable<Course> {
 	}
 	
 	/**
-	 * GET DAY MINUTES
+	 * GET DAY PERIOD MINUTES
 	 * @param dayPeriod: period of days to check
 	 * 30 - last 30 days
 	 * 14 - last 14 days
@@ -102,10 +104,9 @@ public class Course implements Comparable<Course> {
 	 * if null, use date today, otherwise use value
 	 * @return total number of minutes of activity in given period
 	 */
-	public double getDayMinutes(int dayPeriod, LocalDateTime localDateTime) {
+	public double getDayPeriodMinutes(int dayPeriod, LocalDateTime localDateTime) {
 		
 		double totalMinutes = 0.0;
-		boolean interYear = false;
 	
 		if (localDateTime == null) {
 			now = LocalDateTime.now();
@@ -120,37 +121,72 @@ public class Course implements Comparable<Course> {
 		int lowerBoundDay = dayOfYear(lowerBoundDateTime);
 				
 			// start at day today
-		int currentDay = dayOfYear;
+		int currentDay = dayOfYear; 
 		
 		if (currentDay < lowerBoundDay) {
 			lowerBoundDay = -lowerBoundDay;
-			//interYear = true;
 		}
 
 			// go through each activity
 		for (int i = 0; i < activity.size(); i++) {
+			Activity currentActivity = activity.get(i);
+			
 				// if we've reached lowerBoundDay, stop loop
-			if (currentDay < lowerBoundDay) {
+			if (currentDay < lowerBoundDay || currentDay == -lowerBoundDay -1) {
 				i = activity.size();
 			}
 				// if day of activity and currentDay match, add minutes
-			else if (activity.get(i).getDayOfYear() == currentDay || activity.get(i).getDayOfYear() == -currentDay) {
+			else if (currentActivity.getDayOfYear() == currentDay || currentActivity.getDayOfYear() == -currentDay) {
 				totalMinutes += activity.get(i).getTotalMinutes();
 			}
 				// if day of activity is less than currentDay, move to next currentDay and rechecks activity
-			else if (activity.get(i).getDayOfYear() < currentDay || -activity.get(i).getDayOfYear() < currentDay) {
+			else if (currentActivity.getDayOfYear() < currentDay || -currentActivity.getDayOfYear() < currentDay) {
 				now = now.minus(1, ChronoUnit.DAYS);
-				if (interYear) {
-					currentDay = -dayOfYear(now);
-				}
-				else {
-					currentDay = dayOfYear(now);
-				}
+				currentDay = dayOfYear(now);
 				i --; 
 			}
 		}
-		
 		return totalMinutes;
+	}
+	
+	
+	public double getIndividualDayMinutes(int dayPeriod, LocalDateTime localDateTime) {
+				
+		
+		if (localDateTime == null) {
+			now = LocalDateTime.now();
+		}
+		else {
+			now = localDateTime;
+		}
+		
+			// lowerBound date: current day of year minus period
+		LocalDateTime lowerBoundDateTime = now.minus(dayPeriod, ChronoUnit.DAYS);
+		int lowerBoundDay = dayOfYear(lowerBoundDateTime);
+		
+		double totalDayMinutes = 0.0;
+		
+		for (int i = 0; i < activity.size(); i++) {
+			if (activity.get(i).getDayOfYear() == lowerBoundDay) {
+				totalDayMinutes += activity.get(i).getTotalMinutes();
+			}
+		}
+		
+		return totalDayMinutes;
+	}
+	
+	public String getDateFromDayPeriod(int dayPeriod, LocalDateTime localDateTime) {
+		
+		if (localDateTime == null) {
+			now = LocalDateTime.now();
+		}
+		else {
+			now = localDateTime;
+		}
+		LocalDateTime lowerBoundDateTime = now.minus(dayPeriod, ChronoUnit.DAYS);
+		
+		String date = lowerBoundDateTime.format(md);
+		return date;
 	}
 	
 	private int dayOfYear(LocalDateTime dateTime) {

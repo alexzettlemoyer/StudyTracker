@@ -53,90 +53,90 @@ class CourseTest {
 		LocalDateTime dayOfYear = LocalDateTime.parse("2021-12-25T15:54:51.959314");
 			
 		assertEquals(0.0, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(1, dayOfYear));
-		assertEquals(0.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(0.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(0.0, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(1, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("11/21/21", "325", "hw1", "0:01:00:00");
 		assertEquals(1.0, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(0.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(0.0, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/1/21", "334", "hw1", "0:45:45:00"); // 30 days
 		assertEquals(46.75, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(0.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(45.75, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(45.75, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/5/21", "339", "hw2", "0:20:45:00");
 		assertEquals(67.5, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(0.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(66.5, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(66.5, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/11/21", "345", "hw3", "1:00:00:00"); // 14 days
 		assertEquals(127.5, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(60.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(126.5, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(60.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(126.5, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/11/21", "345", "hw4", "0:20:30:00");
 		assertEquals(148.0, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(80.5, c.getDayMinutes(14, dayOfYear));
-		assertEquals(147.0, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(80.5, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(147.0, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/16/21", "350", "hw5", "2:21:30:00");
 		assertEquals(289.5, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(222.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(288.5, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(222.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(288.5, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/18/21", "352", "hw6", "0:45:45:00"); // 7 days
 		assertEquals(335.25, c.getTotalMinutes());
-		assertEquals(45.75, c.getDayMinutes(7, dayOfYear));
-		assertEquals(267.75, c.getDayMinutes(14, dayOfYear));
-		assertEquals(334.25, c.getDayMinutes(30, dayOfYear));
+		assertEquals(45.75, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(267.75, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(334.25, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/18/21", "352", "hw7", "1:51:30:00");
 		assertEquals(446.75, c.getTotalMinutes());
-		assertEquals(157.25, c.getDayMinutes(7, dayOfYear));
-		assertEquals(379.25, c.getDayMinutes(14, dayOfYear));
-		assertEquals(445.75, c.getDayMinutes(30, dayOfYear));
+		assertEquals(157.25, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(379.25, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(445.75, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/20/21", "354", "hw8", "0:45:45:00");
 		assertEquals(492.5, c.getTotalMinutes());
-		assertEquals(203.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(425.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(491.5, c.getDayMinutes(30, dayOfYear));
+		assertEquals(203.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(425.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(491.5, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/20/21", "354", "hw9", "1:21:30:00");
 		assertEquals(574.0, c.getTotalMinutes());
-		assertEquals(284.5, c.getDayMinutes(7, dayOfYear));
-		assertEquals(506.5, c.getDayMinutes(14, dayOfYear));
-		assertEquals(573.0, c.getDayMinutes(30, dayOfYear));
+		assertEquals(284.5, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(506.5, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(573.0, c.getDayPeriodMinutes(30, dayOfYear));
 
 		c.addActivity("12/22/21", "356", "hw10", "3:00:00:00");
 		assertEquals(754.0, c.getTotalMinutes());
-		assertEquals(464.5, c.getDayMinutes(7, dayOfYear));
-		assertEquals(686.5, c.getDayMinutes(14, dayOfYear));
-		assertEquals(753.0, c.getDayMinutes(30, dayOfYear));	
+		assertEquals(464.5, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(686.5, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(753.0, c.getDayPeriodMinutes(30, dayOfYear));	
 		
 		c.addActivity("12/25/21", "358", "hw11", "0:30:00:00");
 		assertEquals(784.0, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(0, dayOfYear));
-		assertEquals(494.5, c.getDayMinutes(7, dayOfYear));
-		assertEquals(716.5, c.getDayMinutes(14, dayOfYear));
-		assertEquals(783.0, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(0, dayOfYear));
+		assertEquals(494.5, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(716.5, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(783.0, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/25/21", "359", "hw12", "0:10:00:00");
 		assertEquals(794.0, c.getTotalMinutes());
-		assertEquals(10.0, c.getDayMinutes(0, dayOfYear));
-		assertEquals(504.5, c.getDayMinutes(7, dayOfYear));
-		assertEquals(726.5, c.getDayMinutes(14, dayOfYear));
-		assertEquals(793.0, c.getDayMinutes(30, dayOfYear));
+		assertEquals(10.0, c.getDayPeriodMinutes(0, dayOfYear));
+		assertEquals(504.5, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(726.5, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(793.0, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		
 		
@@ -148,17 +148,32 @@ class CourseTest {
 				
 		b.addActivity("12/28/21", "362", "hw7", "0:00:20:18");
 		assertEquals(0.33, b.getTotalMinutes());
-		assertEquals(0.33, b.getDayMinutes(0, dayOfYear2));
-		assertEquals(0.33, b.getDayMinutes(7, dayOfYear2));
-		assertEquals(0.33, b.getDayMinutes(14, dayOfYear2));
-		assertEquals(0.33, b.getDayMinutes(30, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(0, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(7, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(14, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(30, dayOfYear2));
 		
 		b.addActivity("11/01/21", null, "hw1", "2:00.0");
 		assertEquals(120.33, b.getTotalMinutes());
-		assertEquals(0.33, b.getDayMinutes(0, dayOfYear2));
-		assertEquals(0.33, b.getDayMinutes(7, dayOfYear2));
-		assertEquals(0.33, b.getDayMinutes(14, dayOfYear2));
-		assertEquals(0.33, b.getDayMinutes(30, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(0, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(7, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(14, dayOfYear2));
+		assertEquals(0.33, b.getDayPeriodMinutes(30, dayOfYear2));
+		
+		// Specific failing test
+		Course a = new Course("MA242");
+		a.addActivity("12/28/21", null, "hw7", "1:00.5");
+		a.addActivity("12/14/21", null, "hw5", "0:14.0");
+		
+		// day of year tested: 362
+		LocalDateTime dayOfYear3 = LocalDateTime.parse("2022-01-03T15:54:51.959314");
+
+		assertEquals(74.5, a.getTotalMinutes());
+		assertEquals(0, a.getDayPeriodMinutes(0, dayOfYear3));
+		assertEquals(60.5, a.getDayPeriodMinutes(7, dayOfYear3));
+		assertEquals(60.5, a.getDayPeriodMinutes(14, dayOfYear3));
+		assertEquals(74.5, a.getDayPeriodMinutes(30, dayOfYear3));
+
 		
 	}
 	
@@ -172,31 +187,31 @@ class CourseTest {
 		
 		c.addActivity("12/28/21", "362", "hw1", "0:10:00:00"); // last 7
 		assertEquals(10.0, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(0, dayOfYear));
-		assertEquals(10.0, c.getDayMinutes(7, dayOfYear));
-		assertEquals(10.0, c.getDayMinutes(14, dayOfYear));
-		assertEquals(10.0, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(0, dayOfYear));
+		assertEquals(10.0, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(10.0, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(10.0, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("12/31/21", "365", "hw2", "1:30:30:00"); // last 7
 		assertEquals(100.5, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(0, dayOfYear));
-		assertEquals(100.5, c.getDayMinutes(7, dayOfYear));
-		assertEquals(100.5, c.getDayMinutes(14, dayOfYear));
-		assertEquals(100.5, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(0, dayOfYear));
+		assertEquals(100.5, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(100.5, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(100.5, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("1/2/22", "2", "hw3", "0:45:45:00"); // last 7
 		assertEquals(146.25, c.getTotalMinutes());
-		assertEquals(0.0, c.getDayMinutes(0, dayOfYear));
-		assertEquals(146.25, c.getDayMinutes(7, dayOfYear));
-		assertEquals(146.25, c.getDayMinutes(14, dayOfYear));
-		assertEquals(146.25, c.getDayMinutes(30, dayOfYear));
+		assertEquals(0.0, c.getDayPeriodMinutes(0, dayOfYear));
+		assertEquals(146.25, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(146.25, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(146.25, c.getDayPeriodMinutes(30, dayOfYear));
 		
 		c.addActivity("1/4/22", "4", "hw4", "3:00:00:00"); // today
 		assertEquals(326.25, c.getTotalMinutes());
-		assertEquals(180.0, c.getDayMinutes(0, dayOfYear));
-		assertEquals(326.25, c.getDayMinutes(7, dayOfYear));
-		assertEquals(326.25, c.getDayMinutes(14, dayOfYear));
-		assertEquals(326.25, c.getDayMinutes(30, dayOfYear));
+		assertEquals(180.0, c.getDayPeriodMinutes(0, dayOfYear));
+		assertEquals(326.25, c.getDayPeriodMinutes(7, dayOfYear));
+		assertEquals(326.25, c.getDayPeriodMinutes(14, dayOfYear));
+		assertEquals(326.25, c.getDayPeriodMinutes(30, dayOfYear));
 
 	}
 

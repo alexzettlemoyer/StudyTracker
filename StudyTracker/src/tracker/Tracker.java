@@ -345,7 +345,7 @@ public class Tracker {
 		if (currentCourse == null) {
 			return "0:00.0";
 		}
-		double dayMinutes = currentCourse.getDayMinutes(dayPeriod, dateTime);
+		double dayMinutes = currentCourse.getDayPeriodMinutes(dayPeriod, dateTime);
 		return Activity.getTime(dayMinutes);
 	}
 	

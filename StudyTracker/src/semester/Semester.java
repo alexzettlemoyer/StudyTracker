@@ -86,7 +86,7 @@ public class Semester implements Comparable<Semester> {
 		double totalMinutes = 0.0;
 		
 		for (int i = 0; i < courses.size(); i++) {
-			totalMinutes += courses.get(i).getDayMinutes(period, dateTime);
+			totalMinutes += courses.get(i).getDayPeriodMinutes(period, dateTime);
 		}
 		return totalMinutes;
 		
