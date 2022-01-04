@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
@@ -23,7 +22,6 @@ public class GraphPanel extends JFrame {
 	
 	
 	Tracker tracker;
-	JComboBox<String> comboCourse;
 	
 	/**
 	 * 
@@ -40,10 +38,6 @@ public class GraphPanel extends JFrame {
 		setTitle("Graph");
 		
 		tracker = Tracker.getInstance();
-		
-		comboCourse = new JComboBox<String>();
-		comboCourse.addItem("Last 30 days");
-		comboCourse.addItem("Weekly total");
 		
 		JFreeChart chart;
 		

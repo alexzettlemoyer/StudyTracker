@@ -44,6 +44,7 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 	int minutes;
 	int seconds;
 	int milliseconds;
+	long millis;
 	
 	JLabel lblCurrentSemester;
 	JComboBox<String> comboSemesters;
@@ -362,23 +363,27 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 	 */
 	@Override
 	public void run() {
+		
+		long startTime;
+		NumberFormat nf = new DecimalFormat("00");
+		
 		while (hours < 60) {
 		   while(minutes < 60) {
 			   while (seconds < 60) {
-				   while (milliseconds < 100) {
+				   startTime = System.currentTimeMillis();
+				   millis = 0;
+				   while (millis < 1000) {
+					  
 				      if(stop)
 				      {
 				    	  break;
 				      }
-					      NumberFormat nf = new DecimalFormat("00");
-					      lblTime.setText(nf.format(hours) + ":" + nf.format(minutes) + ":" + nf.format(seconds) + ":" + nf.format(milliseconds));
-				      try {
-				    	  Thread.sleep(8);
-				      } catch(Exception e){}
-				      milliseconds++;
+				      millis = System.currentTimeMillis() - startTime;
+				      milliseconds = (int) millis / 10;
+				      
+					  lblTime.setText(nf.format(hours) + ":" + nf.format(minutes) + ":" + nf.format(seconds) + ":" + nf.format(milliseconds));				
 				   }
-		     	seconds++;
-		     	milliseconds = 0;
+				   seconds++;
 			   }
 		   minutes++;
 		   seconds = 0;

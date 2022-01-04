@@ -45,13 +45,11 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		
 	static StudyTrackerGUI ui;
 	
-	final String properties = "file.properties";
+	String properties = "file.properties";
 	
 	static Tracker tracker;
 	Listener listener;
-	
-	static String fileName = new String("/study-tracker-data/StudyTrackerData.txt");
-	
+		
 	Properties prop;
 	File propFile;
 	
@@ -75,6 +73,7 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		setLocation(100, 100);
 		setSize(800, 600);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setResizable(false);
 		setUpMenuBar();
 				
 		prop = new Properties();
