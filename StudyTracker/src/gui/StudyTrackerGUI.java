@@ -11,7 +11,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -45,8 +44,9 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		
 	static StudyTrackerGUI ui;
 	
-	String properties = "file.properties";
-	
+	String properties;
+	String path;
+		
 	static Tracker tracker;
 	Listener listener;
 		
@@ -75,11 +75,17 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 		setUpMenuBar();
+		
+		path = System.getProperty("user.home");
+		properties = path + "/Downloads/StudyTrackerData/config.properties";
+		
+		new File(path + "/Downloads/StudyTrackerData/").mkdir();
 				
 		prop = new Properties();
 		propFile = new File(properties);
 		
 		prop.setProperty("filePath", "");
+
 		
 		tracker = Tracker.getInstance();
 		listener = Listener.getInstance();
@@ -326,6 +332,7 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 	private String getFileName(boolean load) {
 		
 		JFileChooser fc = new JFileChooser("./");
+		fc.setCurrentDirectory(new File(path + "/Downloads/StudyTrackerData/"));
 		int returnVal = Integer.MIN_VALUE;
 		if (load) {
 			returnVal = fc.showOpenDialog(this);
@@ -345,15 +352,23 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 	private String loadPropFile() {
 		
 		String contents = new String();
-		
+					
 		try {
-			prop.load(new FileInputStream(propFile));
-		} catch (FileNotFoundException e) {
-			System.out.println("Unable to load filePath FileNotFound");
+			prop.load(new FileInputStream(properties));
+				
 		} catch (IOException e) {
-			System.out.println("Unable to load filePath IOException");
+				
+			try {
+				propFile.createNewFile();
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(this, "IOException creating file: " + e.getMessage());
+				e1.printStackTrace();
+			}
+			propFile = new File(properties);
+			loadPropFile();
+				
 		}
-		
+
 		contents = prop.getProperty("filePath");
 		return contents;
 	}
@@ -364,7 +379,7 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 			prop.store(new FileOutputStream(propFile), "new Filepath");
 		}
 		catch (IOException e) {
-			System.out.println("Unable to save filePath");
+			JOptionPane.showMessageDialog(this, "IOException: " + e.getMessage());
 		}
 	}
 	
