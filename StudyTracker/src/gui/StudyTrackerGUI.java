@@ -27,31 +27,62 @@ import javax.swing.border.TitledBorder;
 
 import tracker.Tracker;
 
+/**
+ * STUDYTRACKER GUI
+ * Class that directly interacts with the console
+ * 
+ * Contains 4 panels:
+ * pnlDirectory across the top of the screen
+ * pnlTracker on the bottom left of the screen
+ * pnlActivity in the bottom middle of the screen
+ * pnlData at on the bottom left of the screen
+ * 
+ * Contains a menu bar and handles functions:
+ * Open, Save As, Clear, and Quit
+ * Which directly interact with the Programs .properties file
+ * 
+ * After opening the program for the first time, 
+ * the .properties file is stored in the program's directory
+ * the .properties file contains the absolute path of the most recent 
+ * .txt file that the program saved, 
+ * 
+ * @author alexzettlemoyer
+ * 
+ */
 public class StudyTrackerGUI extends JFrame implements ActionListener {
 	
+	/** Directory Panel (top) */
 	DirectoryPanel pnlDirectory;
+	/** Tracker Panel (bottom left) */
 	TrackerPanel pnlTracker;
+	/** Activity Panel (bottom middle) */ 
 	ActivityPanel pnlActivity;
+	/** Data Panel (bottom right) */
 	DataPanel pnlData;
 	
 	JMenuBar menuBar;
 	JMenu menu;
 	
+	/** MenuBar items: */
 	JMenuItem itemLoad;
+	JMenuItem itemSaveAs;
 	JMenuItem itemSave;
 	JMenuItem itemClear;
 	JMenuItem itemQuit;
-		
+	
+	/** Instance of the GUI */
 	static StudyTrackerGUI ui;
 	
+	/** fields for handling .properties file */
 	String properties;
 	String path;
-		
-	static Tracker tracker;
-	Listener listener;
-		
 	Properties prop;
 	File propFile;
+	
+	/** fields that interact with the rest of the program
+	 * ie. panels, and the program's controller */
+	static Tracker tracker;
+	Listener listener;
 	
 	
 	/**
@@ -68,6 +99,8 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 	 * initializing the GUI
 	 */
 	public void initializeGUI() {
+				
+		// setup
 		Container c = getContentPane();
 		setTitle("StudyTracker");
 		setLocation(100, 100);
@@ -76,22 +109,32 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		setResizable(false);
 		setUpMenuBar();
 		
-		path = System.getProperty("user.home");
-		properties = path + "/Downloads/StudyTrackerData/config.properties";
+			// gets the absolute path of where the program was launched
+		path = System.getProperty("user.dir");
+			// the absolute path of the properties file is in the 
+			// "lib" file titled "config.properties"
+		properties = path + "/lib/config.properties";
 		
-		new File(path + "/Downloads/StudyTrackerData/").mkdir();
-				
+			// makes a new file called StudyTrackerData 
+			// which stores the .txt Files (mainly for testing purposes)
+		new File(path + "/lib/StudyTrackerData/").mkdir();
+			
+			// creating instance of Properties and the .properties file
 		prop = new Properties();
 		propFile = new File(properties);
 		
+			// indicating that the properties will store filePath
 		prop.setProperty("filePath", "");
 
+		
 		
 		tracker = Tracker.getInstance();
 		listener = Listener.getInstance();
 		
 		c.setLayout(new GridBagLayout());
 		Border lowerEtched = BorderFactory.createEtchedBorder(Color.white, Color.white);		
+		
+		
 		
 			// DIRECTORY PANEL
 		pnlDirectory = new DirectoryPanel();
@@ -116,6 +159,8 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		pnlData.setMinimumSize(new Dimension(240, 600));
 		pnlData.setBorder(borderData);
 		
+		
+			// adding them together
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 			// set directory constraints
@@ -160,8 +205,10 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 			// add data with its constraints
 		c.add(pnlData, constraints);
 					
+		
 		setVisible(true);
 		
+			// if there are contents in the properties file,
 		if (loadPropFile().length() != 0) {
 			tracker.loadRecords(new File(loadPropFile()));
 			pnlDirectory.updateLists();
@@ -186,17 +233,19 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		menu = new JMenu("File");
 		
 		itemLoad = new JMenuItem("Open");
-		itemSave = new JMenuItem("Save As");
+		itemSaveAs = new JMenuItem("Save As");
+		itemSave = new JMenuItem();
 		itemClear = new JMenuItem("Clear");
 		itemQuit = new JMenuItem("Quit");
 		
 		itemLoad.addActionListener(this);
+		itemSaveAs.addActionListener(this);
 		itemSave.addActionListener(this);
 		itemClear.addActionListener(this);
 		itemQuit.addActionListener(this);
 				
 		menu.add(itemLoad);
-		menu.add(itemSave);
+		menu.add(itemSaveAs);
 		menu.add(itemClear);
 		menu.add(itemQuit);
 		menuBar.add(menu);
@@ -257,58 +306,43 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 				// ignore (user canceled)
 			}
 		}
-		else if (e.getSource() == itemSave) {
+		else if (e.getSource() == itemSaveAs) {
 			
 			if (tracker.isChanged()) {
-				try {
-					if (loadPropFile().length() == 0) {
-						String fileName = getFileName(false);
-						tracker.saveRecords(new File(fileName));
-						savePropFile(fileName);
-					}
-					else {
-						File currentFile = new File(loadPropFile());
-						int selected = JOptionPane.showConfirmDialog(null, "Save to " + currentFile.getName() + "?", "Save", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				try {					
+					String fileName = getFileName(false);
+					tracker.saveRecords(new File(fileName));
+					savePropFile(fileName);
 						
-						if (selected == JOptionPane.YES_OPTION) {
-							tracker.saveRecords(currentFile);
-						}
-						else if (selected == JOptionPane.NO_OPTION) {
-							String fileName = getFileName(false);
-							tracker.saveRecords(new File(fileName));
-							savePropFile(fileName);
-						}
-					}
-					
 				}
 				catch (IllegalArgumentException iae) {
 					JOptionPane.showMessageDialog(this, "Unable to save file.");
-				}
-				catch (IllegalStateException ise) {
-					// ignore (user canceled)
 				}
 			}
 			else {
 				JOptionPane.showMessageDialog(this, "No changes to save.");
 			}
 		}
+		else if (e.getSource() == itemSave) {
+			
+			if (loadPropFile().length() == 0) {
+				String fileName = "MyStudyRecords.txt";
+				File newFile = new File(path + "/lib/StudyTrackerData/", fileName);
+				tracker.saveRecords(newFile);
+				savePropFile(newFile.getAbsolutePath());
+			}
+			else {
+				File currentFile = new File(loadPropFile());
+				tracker.saveRecords(currentFile);
+			}
+			
+		}
 		else if (e.getSource() == itemQuit) {
 			
 			if (tracker != null && tracker.isChanged()) {
 				try {
-					if (loadPropFile().length() != 0) {
-						
-						tracker.saveRecords(new File(loadPropFile()));
-					}
-					else {
-						int selected = JOptionPane.showConfirmDialog(null, "Study tracker data is unsaved. Would you like to save before clearing?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-						
-						if (selected == JOptionPane.YES_OPTION) {
-							String fileName = getFileName(false);
-							tracker.saveRecords(new File(fileName));
-							savePropFile(fileName);
-						}
-					}
+					// Save!!
+					itemSave.doClick();	
 					System.exit(0);
 				}
 				catch (IllegalArgumentException iae) {
@@ -332,7 +366,7 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 	private String getFileName(boolean load) {
 		
 		JFileChooser fc = new JFileChooser("./");
-		fc.setCurrentDirectory(new File(path + "/Downloads/StudyTrackerData/"));
+		fc.setCurrentDirectory(new File(path + "/lib/StudyTrackerData/"));
 		int returnVal = Integer.MIN_VALUE;
 		if (load) {
 			returnVal = fc.showOpenDialog(this);
@@ -349,6 +383,19 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 		
 	}
 	
+	/**
+	 * loads the properties in the config.properties file
+	 * and returns a string of the contents of "filePath"
+	 * 
+	 * if the config.properties file throws an exception
+	 * (it didn't exist in the system) make a new one!
+	 * Then calls the method loadPropFile() again to load the properties
+	 * from the new properties file just created
+	 * 
+	 * 
+	 * @return String contents - the filePath stored in the properties file
+	 */
+	boolean multiple = false;
 	private String loadPropFile() {
 		
 		String contents = new String();
@@ -361,8 +408,11 @@ public class StudyTrackerGUI extends JFrame implements ActionListener {
 			try {
 				propFile.createNewFile();
 			} catch (IOException e1) {
+				if (multiple) {
+					return "";
+				}
 				JOptionPane.showMessageDialog(this, "IOException creating file: " + e.getMessage());
-				e1.printStackTrace();
+				multiple = true;
 			}
 			propFile = new File(properties);
 			loadPropFile();
