@@ -10,6 +10,17 @@ import io.StudyRecordsWriter;
 import semester.Semester;
 import util.SortedList;
 
+/**
+ * Tracker !!!
+ * Directly interact with the GUI
+ * the Controller portion of the MVC
+ * background operations of the Program
+ * 
+ * Uses the Singleton pattern
+ * 
+ * @author alexzettlemoyer
+ *
+ */
 public class Tracker {
 	
 	SortedList<Semester> semesters;

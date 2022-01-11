@@ -74,7 +74,7 @@ public class GraphPanel extends JFrame {
 		}
 		else {
 			chart = setupSemesterGraph(timePeriod);
-			setSize(500, 500);
+			setSize(900, 500);
 		}
 		
 		
