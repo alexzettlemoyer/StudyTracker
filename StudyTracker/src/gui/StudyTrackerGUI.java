@@ -52,37 +52,37 @@ import tracker.Tracker;
 public class StudyTrackerGUI extends JFrame implements ActionListener {
 	
 	/** Directory Panel (top) */
-	DirectoryPanel pnlDirectory;
+	private DirectoryPanel pnlDirectory;
 	/** Tracker Panel (bottom left) */
-	TrackerPanel pnlTracker;
+	private TrackerPanel pnlTracker;
 	/** Activity Panel (bottom middle) */ 
-	ActivityPanel pnlActivity;
+	private ActivityPanel pnlActivity;
 	/** Data Panel (bottom right) */
-	DataPanel pnlData;
+	private DataPanel pnlData;
 	
-	JMenuBar menuBar;
-	JMenu menu;
+	private JMenuBar menuBar;
+	private JMenu menu;
 	
 	/** MenuBar items: */
-	JMenuItem itemLoad;
-	JMenuItem itemSaveAs;
-	JMenuItem itemSave;
-	JMenuItem itemClear;
-	JMenuItem itemQuit;
+	private JMenuItem itemLoad;
+	private JMenuItem itemSaveAs;
+	private JMenuItem itemSave;
+	private JMenuItem itemClear;
+	private JMenuItem itemQuit;
 	
 	/** Instance of the GUI */
 	static StudyTrackerGUI ui;
 	
 	/** fields for handling .properties file */
-	String properties;
-	String path;
-	Properties prop;
-	File propFile;
+	private String properties;
+	private String path;
+	private Properties prop;
+	private File propFile;
 	
 	/** fields that interact with the rest of the program
 	 * ie. panels, and the program's controller */
-	static Tracker tracker;
-	Listener listener;
+	private static Tracker tracker;
+	private Listener listener;
 	
 	
 	/**

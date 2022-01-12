@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,69 +23,78 @@ import javax.swing.border.LineBorder;
 
 import activity.Activity;
 
-
+/**
+ * TRACKER PANEL
+ * 
+ * Handles Timer, Title, Preview, and Manually Saving an Activity
+ * 
+ * Allows users to time their activity, give it a title,
+ * preview the activity (with the current date and designated title,
+ * and save it to the Activity Panel
+ * Or to Manually enter their activity
+ * 
+ * @author alexzettlemoyer
+ *
+ */
 public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 	
-	String time;
-	boolean stop;
-	JLabel lblTime;
-	JLabel lblPrompt;
 	
-	JButton btnStart;
-	JButton btnStop;
-	JButton btnSave;
-	JButton btnReset;
+	/** Labels for Timer and Title */
+	private JLabel lblTime;
+	private JLabel lblPrompt;
 	
-	String title;
-	final JTextArea txtArea;
+	/** Buttons for Timer */
+	private JButton btnStart;
+	private JButton btnStop;
+	private JButton btnSave;
+	private JButton btnReset;
+	
+	/** Title text area */
+	private final JTextArea txtArea;
 		
-	int hours;
-	int minutes;
-	int seconds;
-	int milliseconds;
-	long millis;
+	/** Timer fields */
+	private boolean stop;
+	private int hours;
+	private int minutes;
+	private int seconds;
+	private int milliseconds;
+	private long millis;
 	
-	JLabel lblCurrentSemester;
-	JComboBox<String> comboSemesters;
-	JButton btnAddSemester;
-	JButton btnEditSemester;
-	JButton btnRemoveSemester;
+	/** Labels for Activity Preview */
+	private JLabel lblActivity;
+	private JLabel lblActivityDisplay;
 	
-	JLabel lblCurrentCourse;
-	JComboBox<String> comboCourses;
-	JButton btnAddCourse;
-	JButton btnEditCourse;
-	JButton btnRemoveCourse;
+	/** Fields for Manual Activity Add function */
+	private JLabel lblDatePrompt;
+	private JLabel lblTitlePrompt;
+	private JLabel lblTimePrompt;
+	private JTextArea txtDate;
+	private JTextArea txtTitle;
+	private JTextArea txtTime;
+	private JButton btnManualAdd;
 	
-	JLabel lblActivity;
-	JLabel lblActivityDisplay;
+	/** Manual Add Panel */
+	private JPanel pnlManualAdd;
 	
-	JLabel lblManualAdd;
-	JLabel lblDatePrompt;
-	JLabel lblTitlePrompt;
-	JLabel lblTimePrompt;
-	JTextArea txtDate;
-	JTextArea txtTitle;
-	JTextArea txtTime;
-	JButton btnManualAdd;
+	/** Fields to retrieve info about the Current Date */
+	private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yy");
+	private final DateTimeFormatter DAYOFYEAR = DateTimeFormatter.ofPattern("D");
+	private LocalDateTime now;
 	
-	JPanel pnlManualAdd;
+	/** Fields to handle saving an Activity */
+	private String date;
+	private String currentTitle;
+	private String lastTime;
 	
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yy");
-	DateTimeFormatter DAYOFYEAR = DateTimeFormatter.ofPattern("D");
-	LocalDateTime now;
-	
-	String date;
-	String currentTitle;
-	String lastTime;
-	
+	/** instance of listener which allows panels to interact */
 	private Listener listener;
 		
 
 	/**
-	 * serial version UID
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	
 	/**
 	 * TrackerPanel constructor
@@ -96,14 +104,13 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 		
 		setPreferredSize(new Dimension(260, 600));
 		
+			// SETUP
 		listener = Listener.getInstance();
 		listener.setTracker(this);
-		
 		JPanel pnlTitle = new JPanel();
 		JPanel pnlTime = new JPanel();
 		JPanel pnlActivity = new JPanel();
 		pnlManualAdd = new JPanel();
-		
 		Border border = new LineBorder(Color.white, 4);
 		
 		stop = false;
@@ -117,7 +124,6 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 		txtArea.setColumns(11);
 		txtArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-		
 		
 			// START button
 		btnStart = new JButton("START");
@@ -360,6 +366,10 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 
 	/**
 	 * run handles timer
+	 * Implemented using the System.currentTimeMillis function
+	 * Gets the currentTime in milliseconds when the timer is started
+	 * Continues until a full second has occurred,
+	 * Then increases seconds and restarts using System.getCurrentTimeMillis
 	 */
 	@Override
 	public void run() {
@@ -370,17 +380,21 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 		while (hours < 60) {
 		   while(minutes < 60) {
 			   while (seconds < 60) {
+				   
 				   startTime = System.currentTimeMillis();
 				   millis = 0;
+				   
 				   while (millis < 1000) {
 					  
 				      if(stop)
 				      {
 				    	  break;
 				      }
+				      	// gets the number of milliseconds since the timer has been started
 				      millis = System.currentTimeMillis() - startTime;
 				      milliseconds = (int) millis / 10;
 				      
+				      	// adding the fields to the timer display
 					  lblTime.setText(nf.format(hours) + ":" + nf.format(minutes) + ":" + nf.format(seconds) + ":" + nf.format(milliseconds));				
 				   }
 				   seconds++;
@@ -394,7 +408,13 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 	}
 
 	/**
-	 * actionPerformed
+	 * ActionPerformed
+	 * Handles various events as they occur:
+	 * Starting, Stopping, Resetting the timer
+	 * Saving an Activity
+	 * Manually Adding an Activity
+	 * 
+	 * @param e the ActionEvent that was performed
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -413,7 +433,6 @@ public class TrackerPanel extends JPanel implements ActionListener, Runnable {
 					minutes = 0;
 					seconds = 0;
 					milliseconds = 0;
-					title = txtArea.getText();
 				}
 				catch (Exception ex) {
 					// add throws if title is empty

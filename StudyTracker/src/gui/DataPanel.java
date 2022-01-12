@@ -19,56 +19,71 @@ import course.Course;
 import semester.Semester;
 import tracker.Tracker;
 
+/**
+ * DATA PANEL
+ * 
+ * Handles displaying the data of the current Semester and Course
+ * Allows the user to graph their data
+ * Creates graphs according to Semester and Course data
+ * 
+ * @author alexzettlemoyer
+ *
+ */
 public class DataPanel extends JPanel implements ActionListener {
 	
-	JLabel lblTitle;
+	/** Title label */
+	private JLabel lblTitle;
 	
-	JLabel lblCourse;
-	JLabel lblCourseTime;
-	JButton btnGraphCourseWeekly;
-	JButton btnGraphCourse;
-	JComboBox<String> comboCoursePeriod;
+	/** Course Display fields */
+	private JLabel lblCourse;
+	private JLabel lblCourseTime;
+	private JButton btnGraphCourseWeekly;
+	private JButton btnGraphCourse;
+	private JComboBox<String> comboCoursePeriod;
 	
-	JLabel lblSemester;
-	JLabel lblSemesterTime;
-	JButton btnGraphSemester;
-	JComboBox<String> comboSemesterPeriod;
+	/** Semester Display fields */
+	private JLabel lblSemester;
+	private JLabel lblSemesterTime;
+	private JButton btnGraphSemester;
+	private JComboBox<String> comboSemesterPeriod;
 	
-	JLabel lblTotal;
-	JLabel lblTotalTime;
+	/** Total Display fields */
+	private JLabel lblTotal;
+	private JLabel lblTotalTime;
 	
-	JLabel lblCourseDivider;
-	JLabel lblSemesterDivider;
-	JLabel lblTotalDivider;
+	/** Dividers */
+	private JLabel lblCourseDivider;
+	private JLabel lblSemesterDivider;
+	private JLabel lblTotalDivider;
 	
-	JButton btnAddActivity;
-	JButton btnSwitch;
+	/** Fields to store ComboBox selections */
+	private String coursePeriod;
+	private String semesterPeriod;
 	
-	Listener listener;
-	Tracker tracker;
-	
-	String coursePeriod;
-	String semesterPeriod;
+	/** fields that interact with the rest of the program
+	 * ie. panels, and the program's controller */
+	private Listener listener;
+	private Tracker tracker;
 	
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * DataPanel constructor
+	 */
 	public DataPanel() {
 		super(new GridBagLayout());	
-		
-		listener = Listener.getInstance();
-		listener.setData(this);
-		
-		tracker = Tracker.getInstance();
-		
 		setPreferredSize(new Dimension(260, 600));
 		
+			// SETUP
+		listener = Listener.getInstance();
+		listener.setData(this);
+		tracker = Tracker.getInstance();
 		JPanel pnlCourse = new JPanel();
 		JPanel pnlSemester = new JPanel();
-		JPanel pnlTotal = new JPanel();
-		
+		JPanel pnlTotal = new JPanel();	
 		Border border = new LineBorder(Color.white, 4);
 		
 			// DIVIDER: ":" label
@@ -146,10 +161,7 @@ public class DataPanel extends JPanel implements ActionListener {
 		lblTotalTime.setHorizontalAlignment(JLabel.CENTER);
 		lblTotalTime.setPreferredSize(new Dimension(80, 40));
 		lblTotalTime.setBorder(new LineBorder(Color.WHITE, 1));
-		
-		btnAddActivity = new JButton();
-		btnSwitch = new JButton();
-		
+
 		
 		GridBagConstraints cGraph = new GridBagConstraints();
 		cGraph.insets = new Insets(2, 2, 2, 2);
@@ -253,16 +265,18 @@ public class DataPanel extends JPanel implements ActionListener {
 		
 	}
 
+	/**
+	 * ActionPerformed
+	 * Handles various events as they occur:
+	 * Clicking the Semester/Course ComboBox
+	 * btnGraph for Semester/Course data
+	 * 
+	 * @param e the ActionEvent that was performed
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if (e.getSource().equals(btnSwitch)) {
-			//
-		}
-		else if (e.getSource().equals(btnAddActivity)) {
-			//
-		}
-		else if (e.getSource().equals(comboCoursePeriod)) {
+		if (e.getSource().equals(comboCoursePeriod)) {
 			coursePeriod = (String) comboCoursePeriod.getSelectedItem();
 			updateCourseTime(coursePeriod);
 		}
@@ -282,6 +296,9 @@ public class DataPanel extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Updates the courseTime, SemesterTime, and TotalTime
+	 */
 	public void update() {
 		updateCourseTime("total");
 		updateSemesterTime("total");
@@ -292,6 +309,10 @@ public class DataPanel extends JPanel implements ActionListener {
 		this.repaint();
 	}
 	
+	/**
+	 * When an activity is added in the TrackerPanel,
+	 * this method adds the Activity's data to the data display 
+	 */
 	public void addActivity() {
 		comboCoursePeriod.actionPerformed(null);
 		comboSemesterPeriod.actionPerformed(null);
@@ -300,6 +321,10 @@ public class DataPanel extends JPanel implements ActionListener {
 		updateTotal();
 	}
 	
+	/**
+	 * When an activity is removed in the ActivityPanel,
+	 * this method removes the Activity's data from the data display
+	 */
 	public void removeActivity() {
 		comboCoursePeriod.actionPerformed(null);
 		comboSemesterPeriod.actionPerformed(null);
@@ -308,6 +333,10 @@ public class DataPanel extends JPanel implements ActionListener {
 		updateTotal();
 	}
 	
+	/**
+	 * Updates the CourseTime as the CourseComboBox is manipulated
+	 * @param period
+	 */
 	public void updateCourseTime(String period) {
 		
 		switch (period) {
@@ -329,6 +358,10 @@ public class DataPanel extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Updates the SemesterTime as the SemesterComboBox is manipulated
+	 * @param period
+	 */
 	public void updateSemesterTime(String period) {
 		
 			switch (period) {
@@ -350,10 +383,16 @@ public class DataPanel extends JPanel implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Updates the totalTime display
+	 */
 	public void updateTotal() {
 		lblTotalTime.setText(tracker.getTotalTime());
 	}
 	
+	/**
+	 * Updates the currentSemester
+	 */
 	public void updateSemester() {
 		Semester currentSemester = tracker.getCurrentSemester();
 		if (currentSemester != null) {
@@ -368,6 +407,9 @@ public class DataPanel extends JPanel implements ActionListener {
 		comboSemesterPeriod.setSelectedItem(semesterPeriod);
 	}
 	
+	/**
+	 * Updates the currentCourse
+	 */
 	public void updateCourse() {
 		Course currentCourse = tracker.getCurrentCourse();
 		if (currentCourse != null) {

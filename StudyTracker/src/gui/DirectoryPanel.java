@@ -20,40 +20,59 @@ import course.Course;
 import semester.Semester;
 import tracker.Tracker;
 
+/**
+ * DIRECTORY PANEL
+ * 
+ * Handles Semesters and Courses
+ * Contains 2 ComboBoxes:
+ * Semesters and Courses
+ * 
+ * Allows users to add, edit, and remove
+ * from list of Semesters and Courses
+ * 
+ * @author alexzettlemoyer
+ *
+ */
 public class DirectoryPanel extends JPanel implements ActionListener {
 
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	JLabel lblCurrentSemester;
-	JComboBox<String> comboSemesters;
-	JButton btnAddSemester;
-	JButton btnEditSemester;
-	JButton btnRemoveSemester;
 	
-	JLabel lblCurrentCourse;
-	JComboBox<String> comboCourses;
-	JButton btnAddCourse;
-	JButton btnEditCourse;
-	JButton btnRemoveCourse;
+	/** Current Semester ComboBox and buttons */
+	private JLabel lblCurrentSemester;
+	private JComboBox<String> comboSemesters;
+	private JButton btnAddSemester;
+	private JButton btnEditSemester;
+	private JButton btnRemoveSemester;
 	
+	/** Current Course ComboBox and buttons */
+	private JLabel lblCurrentCourse;
+	private JComboBox<String> comboCourses;
+	private JButton btnAddCourse;
+	private JButton btnEditCourse;
+	private JButton btnRemoveCourse;
+	
+	/** fields that interact with the rest of the program
+	 * ie. panels, and the program's controller */
 	private Tracker tracker;
 	private Listener listener;
 	
+	/**
+	 * Constructor
+	 */
 	public DirectoryPanel() {
 		super(new GridBagLayout());
 		
+			// SETUP
 		tracker = Tracker.getInstance();
 		listener = Listener.getInstance();
-		
 		JPanel pnlSemester = new JPanel();
 		JPanel pnlSemesterButtons = new JPanel();
-		
 		JPanel pnlCourse = new JPanel();
 		JPanel pnlCourseButtons = new JPanel();
-		
 		Border border = new LineBorder(Color.white, 4);
 		
 			// CURRENT SEMESTER: label
@@ -83,6 +102,7 @@ public class DirectoryPanel extends JPanel implements ActionListener {
 		btnRemoveSemester.setPreferredSize(new Dimension(80, 25));
 		btnRemoveSemester.addActionListener(this);
 		
+		
 			// CURRENT COURSE: label
 		lblCurrentCourse = new JLabel("Current Course:");
 			// COURSE: combo box
@@ -110,6 +130,7 @@ public class DirectoryPanel extends JPanel implements ActionListener {
 		btnRemoveCourse.setPreferredSize(new Dimension(80, 25));
 		btnRemoveCourse.addActionListener(this);
 		
+		
 			// SEMSETER BUTTONS: panel
 		GridBagConstraints cSemesterButtons = new GridBagConstraints();
 		cSemesterButtons.insets = new Insets(3, 3, 3, 3);
@@ -135,6 +156,8 @@ public class DirectoryPanel extends JPanel implements ActionListener {
 		cSemesterButtons.weightx = 0.3;
 		cSemesterButtons.weighty = 1;
 		pnlSemesterButtons.add(btnRemoveSemester, cSemesterButtons);
+		
+		
 		
 			// SEMESTER: panel
 		GridBagConstraints cSemester = new GridBagConstraints();
@@ -219,6 +242,7 @@ public class DirectoryPanel extends JPanel implements ActionListener {
 		cCourse.weighty = 0.3;
 		pnlCourse.add(pnlCourseButtons, cCourse);
 		
+			// adding Semester Panel and Course Panel to the Directory panel
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(5, 10, 10, 5);
 		add(pnlSemester, c);
@@ -226,6 +250,14 @@ public class DirectoryPanel extends JPanel implements ActionListener {
 
 	}
 	
+	/**
+	 * ActionPerformed
+	 * Handles various events as they occur:
+	 * Clicking the Semester or Course ComboBox
+	 * Adding, Editing, Or Removing a Semester/Course
+	 * 
+	 * @param e the ActionEvent that was performed
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
